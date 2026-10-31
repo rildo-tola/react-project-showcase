@@ -1,6 +1,8 @@
-// This component displays one project card.
+// Import useState from React.
+// We need it to store information that can change.
+import { useState } from "react";
 
-// We receive information from App.jsx through props.
+// This component receives information through props.
 function ProjectCard({
   number,
   title,
@@ -9,10 +11,20 @@ function ProjectCard({
   liveUrl,
   githubUrl
 }) {
+
+  // Create a state variable called isExpanded.
+  // Each card starts with its details hidden.
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // This function switches between expanded and collapsed.
+  function toggleDetails() {
+    setIsExpanded((currentState) => !currentState);
+  }
+
   return (
-    // article represents one independent project.
     <article className="project-card">
 
+      {/* Project number */}
       <div className="project-number">
         PROJECT {number}
       </div>
@@ -20,34 +32,59 @@ function ProjectCard({
       {/* Project title */}
       <h3>{title}</h3>
 
-      {/* Short project description */}
+      {/* Project description */}
       <p>{description}</p>
 
-      {/* Display the technologies used */}
-      <div className="tech-list">
-        {technologies.map((technology) => (
-          <span key={technology} className="tech-tag">
-            {technology}
-          </span>
-        ))}
-      </div>
+      {/* Button for showing or hiding details */}
+      <button
+        type="button"
+        className="details-toggle"
+        onClick={toggleDetails}
+        aria-expanded={isExpanded}
+      >
+        {isExpanded ? "Show less ↑" : "View details ↓"}
+      </button>
 
-      {/* Links to the deployed project and source code */}
-      <div className="project-links">
+      {/* Only display this section when expanded */}
+      {isExpanded && (
+        <div className="project-details">
 
-        <a href={liveUrl} target="_blank" rel="noreferrer">
-          Live Demo ↗
-        </a>
+          {/* Display the technologies used */}
+          <div className="tech-list">
+            {technologies.map((technology) => (
+              <span key={technology} className="tech-tag">
+                {technology}
+              </span>
+            ))}
+          </div>
 
-        <a href={githubUrl} target="_blank" rel="noreferrer">
-          GitHub ↗
-        </a>
+          {/* Links to the project and source code */}
+          <div className="project-links">
 
-      </div>
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Live Demo ↗
+            </a>
+
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub ↗
+            </a>
+
+          </div>
+
+        </div>
+      )}
 
     </article>
   );
 }
 
-// Make the component available to other files.
+// Make this component available to other files.
 export default ProjectCard;

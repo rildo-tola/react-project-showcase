@@ -247,3 +247,35 @@ body {
     flex-direction: column;
   }
 }
+
+/* Button that controls the project details */
+.details-toggle {
+  align-self: flex-start;
+  margin-top: 18px;
+  padding: 9px 12px;
+
+  background: transparent;
+  border: 1px solid #64a9ff;
+  border-radius: 6px;
+
+  color: #64a9ff;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Change appearance when hovered */
+.details-toggle:hover {
+  background: #64a9ff;
+  color: #08111f;
+}
+
+/* Container for expanded project information */
+.project-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 10px;
+}
