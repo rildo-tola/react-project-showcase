@@ -1,14 +1,15 @@
-// Import our reusable ProjectCard component.
+
+import { useState } from "react";
 import "./App.css";
 import ProjectCard from "./components/ProjectCard";
 
-
-// Store our project information in an array.
+// Store all the project information.
 const projects = [
   {
     id: 1,
     number: "01",
     title: "Weather App",
+    category: "Weather",
 
     description:
       "A weather application that allows users to search for locations and view current weather information using the OpenWeather API.",
@@ -21,7 +22,6 @@ const projects = [
     ],
 
     liveUrl: "https://rildo-tola.github.io/weather-app/",
-
     githubUrl: "https://github.com/rildo-tola/weather-app"
   },
 
@@ -29,6 +29,7 @@ const projects = [
     id: 2,
     number: "02",
     title: "Study Task Tracker",
+    category: "Productivity",
 
     description:
       "A productivity application that helps users manage study tasks, track completion, and save their tasks using localStorage.",
@@ -41,7 +42,6 @@ const projects = [
     ],
 
     liveUrl: "https://rildo-tola.github.io/study-task-tracker/",
-
     githubUrl: "https://github.com/rildo-tola/study-task-tracker"
   },
 
@@ -49,6 +49,7 @@ const projects = [
     id: 3,
     number: "03",
     title: "Personal Portfolio",
+    category: "Portfolio",
 
     description:
       "A responsive personal portfolio website designed to introduce me and showcase my web development projects.",
@@ -61,13 +62,72 @@ const projects = [
     ],
 
     liveUrl: "https://rildo-tola.github.io/phase-1-portfolio/",
-
     githubUrl: "https://github.com/rildo-tola/phase-1-portfolio"
   }
 ];
 
-// Main application component.
 function App() {
+
+  // Store what the user is currently typing.
+  const [searchInput, setSearchInput] = useState("");
+
+  // Store the search term after the form is submitted.
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Store the selected project category.
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Update the search input whenever the user types.
+  function handleSearchInput(event) {
+    setSearchInput(event.target.value);
+  }
+
+  // Update the selected category.
+  function handleCategoryChange(event) {
+    setSelectedCategory(event.target.value);
+  }
+
+  // Handle form submission.
+  function handleSearchSubmit(event) {
+
+    // Stop the browser from reloading the page.
+    event.preventDefault();
+
+    // Apply the search term after removing extra spaces.
+    setSearchTerm(searchInput.trim());
+  }
+
+  // Clear all search and filter selections.
+  function handleClearFilters() {
+    setSearchInput("");
+    setSearchTerm("");
+    setSelectedCategory("All");
+  }
+
+  // Filter projects based on the search and category.
+  const filteredProjects = projects.filter((project) => {
+
+    // Combine the searchable project information.
+    const searchableContent = `
+      ${project.title}
+      ${project.description}
+      ${project.technologies.join(" ")}
+    `.toLowerCase();
+
+    // Check whether the search term exists in the project.
+    const matchesSearch = searchableContent.includes(
+      searchTerm.toLowerCase()
+    );
+
+    // Check whether the project belongs to the selected category.
+    const matchesCategory =
+      selectedCategory === "All" ||
+      project.category === selectedCategory;
+
+    // A project must satisfy both conditions.
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="app">
 
@@ -82,9 +142,9 @@ function App() {
         </a>
       </header>
 
-      {/* Introduction section */}
       <main>
 
+        {/* Introduction */}
         <section className="hero">
           <p className="eyebrow">
             COMPUTER ENGINEERING STUDENT
@@ -95,7 +155,7 @@ function App() {
           </h1>
 
           <p className="hero-description">
-            I'm an aspiring frontend/software developer focused on
+            I'm an aspiring frontend developer focused on
             creating useful, responsive and user-friendly
             web experiences.
           </p>
@@ -115,24 +175,99 @@ function App() {
             </div>
 
             <p className="project-count">
-              03 PROJECTS
+              {projects.length} PROJECTS
             </p>
           </div>
 
-          {/* Create a card for every project in the array */}
+          {/* Search and filter form */}
+          <form
+            className="project-filters"
+            onSubmit={handleSearchSubmit}
+          >
+
+            {/* Search input */}
+            <div className="filter-field">
+              <label htmlFor="project-search">
+                Search projects
+              </label>
+
+              <input
+                id="project-search"
+                type="search"
+                placeholder="Search by name or technology..."
+                value={searchInput}
+                onChange={handleSearchInput}
+              />
+            </div>
+
+            {/* Category selection */}
+            <div className="filter-field">
+              <label htmlFor="project-category">
+                Category
+              </label>
+
+              <select
+                id="project-category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              >
+                <option value="All">All projects</option>
+                <option value="Weather">Weather</option>
+                <option value="Productivity">Productivity</option>
+                <option value="Portfolio">Portfolio</option>
+              </select>
+            </div>
+
+            {/* Submit search */}
+            <button
+              type="submit"
+              className="filter-button"
+            >
+              Search
+            </button>
+
+            {/* Reset search and category */}
+            <button
+              type="button"
+              className="clear-button"
+              onClick={handleClearFilters}
+            >
+              Clear
+            </button>
+
+          </form>
+
+          {/* Display how many projects match */}
+          <p className="results-count">
+            Showing {filteredProjects.length} of {projects.length} projects
+          </p>
+
+          {/* Display the filtered project cards */}
           <div className="projects-grid">
 
-            {projects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                number={project.number}
-                title={project.title}
-                description={project.description}
-                technologies={project.technologies}
-                liveUrl={project.liveUrl}
-                githubUrl={project.githubUrl}
-              />
-            ))}
+            {filteredProjects.length > 0 ? (
+
+              filteredProjects.map((project) => (
+
+                <ProjectCard
+                  key={project.id}
+                  number={project.number}
+                  title={project.title}
+                  description={project.description}
+                  technologies={project.technologies}
+                  liveUrl={project.liveUrl}
+                  githubUrl={project.githubUrl}
+                />
+
+              ))
+
+            ) : (
+
+              <p className="empty-state">
+                No projects found. Try another search or clear your filters.
+              </p>
+
+            )}
 
           </div>
 
