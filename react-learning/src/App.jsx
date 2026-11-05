@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+// Import the React Hooks we need.
+import { useState, useEffect } from "react";
 import "./App.css";
 import ProjectCard from "./components/ProjectCard";
 
@@ -76,6 +77,80 @@ function App() {
 
   // Store the selected project category.
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+// Store the posts received from the API.
+const [posts, setPosts] = useState([]);
+
+// Track whether the API request is still running.
+const [loading, setLoading] = useState(true);
+
+// Store any error message if the request fails.
+const [error, setError] = useState("");
+
+
+// Fetch sample posts when the component loads.
+useEffect(() => {
+
+  // Create a controller that lets us cancel the request.
+  const controller = new AbortController();
+
+  // Create an asynchronous function for fetching posts.
+  async function fetchPosts() {
+
+    try {
+
+      // Show the loading state.
+      setLoading(true);
+
+      // Clear any previous error message.
+      setError("");
+
+      // Send a request to the API.
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts?_limit=5",
+        {
+          signal: controller.signal
+        }
+      );
+
+      // Check whether the request was successful.
+      if (!response.ok) {
+        throw new Error("Failed to retrieve posts.");
+      }
+
+      // Convert the response into JSON.
+      const data = await response.json();
+
+      // Save the received posts in React state.
+      setPosts(data);
+
+    } catch (err) {
+
+      // Ignore errors caused by cancelling the request.
+      if (err.name !== "AbortError") {
+        setError(err.message);
+      }
+
+    } finally {
+
+      // Stop the loading indicator if the request wasn't cancelled.
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
+
+    }
+  }
+
+  // Run the function.
+  fetchPosts();
+
+  // Cancel the request if the component is removed.
+  return () => {
+    controller.abort();
+  };
+
+}, []); // Empty array: fetch on initial mount.
+
 
   // Update the search input whenever the user types.
   function handleSearchInput(event) {
@@ -272,6 +347,59 @@ function App() {
           </div>
 
         </section>
+
+
+{/* API integration section */}
+<section className="posts-section">
+
+  <div className="section-heading">
+    <div>
+      <p className="eyebrow">API INTEGRATION</p>
+      <h2>Latest Community Posts</h2>
+    </div>
+  </div>
+
+  {/* Show loading message while fetching */}
+  {loading && (
+    <p className="api-message">
+      Loading posts...
+    </p>
+  )}
+
+  {/* Show an error if the request fails */}
+  {error && (
+    <p className="api-error">
+      {error}
+    </p>
+  )}
+
+  {/* Display posts after successful fetching */}
+  {!loading && !error && (
+
+    <div className="posts-grid">
+
+      {posts.map((post) => (
+
+        <article className="post-card" key={post.id}>
+
+          <p className="post-number">
+            POST #{post.id}
+          </p>
+
+          <h3>{post.title}</h3>
+
+          <p>{post.body}</p>
+
+        </article>
+
+      ))}
+
+    </div>
+
+  )}
+
+</section>
+
 
       </main>
 

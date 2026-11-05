@@ -408,3 +408,76 @@ body {
     width: 100%;
   }
 }
+
+
+/* API posts section */
+.posts-section {
+  margin-top: 80px;
+}
+
+/* Posts grid */
+.posts-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  );
+
+  gap: 20px;
+}
+
+/* Individual post card */
+.post-card {
+  padding: 24px;
+
+  background: #151c29;
+  border: 1px solid #283346;
+  border-radius: 12px;
+
+  transition: transform 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Hover effect */
+.post-card:hover {
+  transform: translateY(-4px);
+  border-color: #64a9ff;
+}
+
+/* Post number */
+.post-number {
+  color: #64a9ff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* Post title */
+.post-card h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+/* Post description */
+.post-card p:last-child {
+  color: #a5adbb;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* Loading message */
+.api-message {
+  color: #64a9ff;
+  padding: 20px 0;
+}
+
+/* Error message */
+.api-error {
+  color: #ff7777;
+  background: rgba(255, 80, 80, 0.08);
+  padding: 16px;
+  border-radius: 8px;
+}
