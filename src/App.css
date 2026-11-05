@@ -481,3 +481,36 @@ body {
   padding: 16px;
   border-radius: 8px;
 }
+
+/* Container for the API controls */
+.api-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+/* User selection dropdown */
+.api-controls select {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Refresh button */
+.api-controls button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2563eb;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Button hover effect */
+.api-controls button:hover {
+  background-color: #1d4ed8;
+}

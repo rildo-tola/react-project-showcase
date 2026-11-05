@@ -87,69 +87,66 @@ const [loading, setLoading] = useState(true);
 // Store any error message if the request fails.
 const [error, setError] = useState("");
 
+// Stores the user whose posts we want to retrieve
+const [selectedUser, setSelectedUser] = useState("1");
+
+// Changes whenever the user clicks the refresh button
+const [refreshCount, setRefreshCount] = useState(0);
+
 
 // Fetch sample posts when the component loads.
 useEffect(() => {
-
-  // Create a controller that lets us cancel the request.
+  // Allows us to cancel an unfinished request
   const controller = new AbortController();
 
-  // Create an asynchronous function for fetching posts.
+  // Function that fetches posts from the API
   async function fetchPosts() {
-
     try {
-
-      // Show the loading state.
       setLoading(true);
-
-      // Clear any previous error message.
       setError("");
+      setPosts([]);
 
-      // Send a request to the API.
+      // Build the API URL using the selected user
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts?_limit=5",
-        {
-          signal: controller.signal
-        }
+        `https://jsonplaceholder.typicode.com/posts?userId=${selectedUser}&_limit=5`,
+        { signal: controller.signal }
       );
 
-      // Check whether the request was successful.
+      // Check whether the request was successful
       if (!response.ok) {
-        throw new Error("Failed to retrieve posts.");
+        throw new Error("Failed to fetch posts.");
       }
 
-      // Convert the response into JSON.
+      // Convert the response into JavaScript data
       const data = await response.json();
 
-      // Save the received posts in React state.
+      // Save the returned posts
       setPosts(data);
 
     } catch (err) {
-
-      // Ignore errors caused by cancelling the request.
+      // Ignore errors caused by cancelling a request
       if (err.name !== "AbortError") {
         setError(err.message);
       }
 
     } finally {
-
-      // Stop the loading indicator if the request wasn't cancelled.
+      // Stop the loading indicator if this request wasn't cancelled
       if (!controller.signal.aborted) {
         setLoading(false);
       }
-
     }
   }
 
-  // Run the function.
+  // Run the fetching function
   fetchPosts();
 
-  // Cancel the request if the component is removed.
+  // Cancel the previous request when dependencies change
   return () => {
     controller.abort();
   };
 
-}, []); // Empty array: fetch on initial mount.
+// Run again when either value changes
+}, [selectedUser, refreshCount]);
 
 
   // Update the search input whenever the user types.
@@ -373,26 +370,52 @@ useEffect(() => {
     </p>
   )}
 
+{/* Controls for choosing which user's posts to display */}
+<div className="api-controls">
+
+  <label htmlFor="user-select">
+    Choose a user:
+  </label>
+
+  <select
+    id="user-select"
+    value={selectedUser}
+    onChange={(event) => setSelectedUser(event.target.value)}
+  >
+    <option value="1">User 1</option>
+    <option value="2">User 2</option>
+    <option value="3">User 3</option>
+    <option value="4">User 4</option>
+    <option value="5">User 5</option>
+  </select>
+
+  {/* Clicking this changes refreshCount and triggers useEffect */}
+  <button onClick={() => setRefreshCount(refreshCount + 1)}>
+    Refresh Posts
+  </button>
+
+</div>
+
   {/* Display posts after successful fetching */}
   {!loading && !error && (
 
+
+
     <div className="posts-grid">
 
-      {posts.map((post) => (
+    {posts.length === 0 && !loading && !error ? (
+  <p>No posts were found for this user.</p>
+) : (
+  posts.map((post) => (
+    <article className="post-card" key={post.id}>
+      <span className="post-number">Post #{post.id}</span>
 
-        <article className="post-card" key={post.id}>
+      <h3>{post.title}</h3>
 
-          <p className="post-number">
-            POST #{post.id}
-          </p>
-
-          <h3>{post.title}</h3>
-
-          <p>{post.body}</p>
-
-        </article>
-
-      ))}
+      <p>{post.body}</p>
+    </article>
+  ))
+)}
 
     </div>
 
