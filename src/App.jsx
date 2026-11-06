@@ -1,5 +1,6 @@
 
 // Import the React Hooks we need.
+import PostsExplorer from "./components/PostsExplorer";
 import { useState, useEffect } from "react";
 import "./App.css";
 import ProjectCard from "./components/ProjectCard";
@@ -77,76 +78,6 @@ function App() {
 
   // Store the selected project category.
   const [selectedCategory, setSelectedCategory] = useState("All");
-
-// Store the posts received from the API.
-const [posts, setPosts] = useState([]);
-
-// Track whether the API request is still running.
-const [loading, setLoading] = useState(true);
-
-// Store any error message if the request fails.
-const [error, setError] = useState("");
-
-// Stores the user whose posts we want to retrieve
-const [selectedUser, setSelectedUser] = useState("1");
-
-// Changes whenever the user clicks the refresh button
-const [refreshCount, setRefreshCount] = useState(0);
-
-
-// Fetch sample posts when the component loads.
-useEffect(() => {
-  // Allows us to cancel an unfinished request
-  const controller = new AbortController();
-
-  // Function that fetches posts from the API
-  async function fetchPosts() {
-    try {
-      setLoading(true);
-      setError("");
-      setPosts([]);
-
-      // Build the API URL using the selected user
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/posts?userId=${selectedUser}&_limit=5`,
-        { signal: controller.signal }
-      );
-
-      // Check whether the request was successful
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts.");
-      }
-
-      // Convert the response into JavaScript data
-      const data = await response.json();
-
-      // Save the returned posts
-      setPosts(data);
-
-    } catch (err) {
-      // Ignore errors caused by cancelling a request
-      if (err.name !== "AbortError") {
-        setError(err.message);
-      }
-
-    } finally {
-      // Stop the loading indicator if this request wasn't cancelled
-      if (!controller.signal.aborted) {
-        setLoading(false);
-      }
-    }
-  }
-
-  // Run the fetching function
-  fetchPosts();
-
-  // Cancel the previous request when dependencies change
-  return () => {
-    controller.abort();
-  };
-
-// Run again when either value changes
-}, [selectedUser, refreshCount]);
 
 
   // Update the search input whenever the user types.
@@ -345,83 +276,8 @@ useEffect(() => {
 
         </section>
 
-
-{/* API integration section */}
-<section className="posts-section">
-
-  <div className="section-heading">
-    <div>
-      <p className="eyebrow">API INTEGRATION</p>
-      <h2>Latest Community Posts</h2>
-    </div>
-  </div>
-
-  {/* Show loading message while fetching */}
-  {loading && (
-    <p className="api-message">
-      Loading posts...
-    </p>
-  )}
-
-  {/* Show an error if the request fails */}
-  {error && (
-    <p className="api-error">
-      {error}
-    </p>
-  )}
-
-{/* Controls for choosing which user's posts to display */}
-<div className="api-controls">
-
-  <label htmlFor="user-select">
-    Choose a user:
-  </label>
-
-  <select
-    id="user-select"
-    value={selectedUser}
-    onChange={(event) => setSelectedUser(event.target.value)}
-  >
-    <option value="1">User 1</option>
-    <option value="2">User 2</option>
-    <option value="3">User 3</option>
-    <option value="4">User 4</option>
-    <option value="5">User 5</option>
-  </select>
-
-  {/* Clicking this changes refreshCount and triggers useEffect */}
-  <button onClick={() => setRefreshCount(refreshCount + 1)}>
-    Refresh Posts
-  </button>
-
-</div>
-
-  {/* Display posts after successful fetching */}
-  {!loading && !error && (
-
-
-
-    <div className="posts-grid">
-
-    {posts.length === 0 && !loading && !error ? (
-  <p>No posts were found for this user.</p>
-) : (
-  posts.map((post) => (
-    <article className="post-card" key={post.id}>
-      <span className="post-number">Post #{post.id}</span>
-
-      <h3>{post.title}</h3>
-
-      <p>{post.body}</p>
-    </article>
-  ))
-)}
-
-    </div>
-
-  )}
-
-</section>
+{/* New reusable API feature */}
+<PostsExplorer />
 
 
       </main>

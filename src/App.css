@@ -514,3 +514,49 @@ body {
 .api-controls button:hover {
   background-color: #1d4ed8;
 }
+
+/* Loading message */
+.api-loading {
+  text-align: center;
+  padding: 25px;
+  color: #64748b;
+}
+
+/* Empty results message */
+.api-empty {
+  text-align: center;
+  padding: 25px;
+  color: #64748b;
+}
+
+/* Error message container */
+.api-error {
+  text-align: center;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  background-color: rgba(239, 68, 68, 0.08);
+}
+
+/* Error text */
+.api-error p {
+  color: #ef4444;
+  margin-bottom: 15px;
+}
+
+/* Retry button */
+.api-error button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #dc2626;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Retry button hover */
+.api-error button:hover {
+  background-color: #b91c1c;
+}
