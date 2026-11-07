@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 
 // Import our reusable components
+import PostsControls from "./PostsControls";
 import PostCard from "./PostCard";
 import LoadingMessage from "./LoadingMessage";
 import ErrorMessage from "./ErrorMessage";
@@ -99,30 +100,12 @@ function PostsExplorer() {
 
       <h2>API Posts Explorer</h2>
 
-      {/* User selection and refresh controls */}
-      <div className="api-controls">
-
-        <label htmlFor="user-select">
-          Choose a user:
-        </label>
-
-        <select
-          id="user-select"
-          value={selectedUser}
-          onChange={(event) => setSelectedUser(event.target.value)}
-        >
-          <option value="1">User 1</option>
-          <option value="2">User 2</option>
-          <option value="3">User 3</option>
-          <option value="4">User 4</option>
-          <option value="5">User 5</option>
-        </select>
-
-        <button onClick={handleRetry}>
-          Refresh Posts
-        </button>
-
-      </div>
+      {/* Pass the state and functions to the controls component */}
+<PostsControls
+  selectedUser={selectedUser}
+  onUserChange={setSelectedUser}
+  onRefresh={handleRetry}
+/>
 
       {/* Display the correct UI depending on the request state */}
       {loading ? (
