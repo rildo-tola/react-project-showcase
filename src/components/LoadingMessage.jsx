@@ -1,8 +1,8 @@
 function LoadingMessage() {
   return (
-    <p className="api-loading">
-      Loading posts, please wait...
-    </p>
+    <p className="api-loading" role="status">
+  Loading posts, please wait...
+</p>
   );
 }
 

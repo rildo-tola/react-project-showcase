@@ -1,7 +1,7 @@
 // Receives an error message and a retry function
 function ErrorMessage({ message, onRetry }) {
   return (
-    <div className="api-error">
+    <div className="api-error" role="alert">
 
       {/* Display the error */}
       <p>{message}</p>

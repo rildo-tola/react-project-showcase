@@ -560,3 +560,42 @@ body {
 .api-error button:hover {
   background-color: #b91c1c;
 }
+
+
+
+/* Tablet screens */
+@media (max-width: 768px) {
+  .projects-grid,
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .posts-section {
+    padding: 20px;
+  }
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
+  .posts-section {
+    padding: 15px;
+  }
+
+  .api-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .api-controls select,
+  .api-controls button {
+    width: 100%;
+  }
+}
+
+/* Make interactive elements easier to identify using a keyboard */
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
+}
