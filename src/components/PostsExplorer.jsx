@@ -1,5 +1,5 @@
 // Import React hooks
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import usePosts from "../hooks/usePosts";
 
 

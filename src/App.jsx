@@ -1,7 +1,7 @@
 
 // Import the React Hooks we need.
 import PostsExplorer from "./components/PostsExplorer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import ProjectCard from "./components/ProjectCard";
 

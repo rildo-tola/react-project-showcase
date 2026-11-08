@@ -1,16 +1,75 @@
-# React + Vite
+# React Project Showcase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive project showcase built with React, JavaScript and CSS. This project demonstrates my understanding of React fundamentals, reusable components, state management and API integration.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[View the live application](https://rildo-tola.github.io/react-project-showcase/)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Displays project cards in an organised layout.
+- Search functionality for finding projects.
+- Category filtering.
+- API Posts Explorer powered by JSONPlaceholder.
+- Ability to select different users and retrieve their posts.
+- Loading, error and empty-result states.
+- Refresh and retry functionality.
+- Reusable React components.
+- Custom React hook for managing API requests.
+- Responsive layout for different screen sizes.
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- JavaScript
+- HTML
+- CSS
+- Vite
+- Git and GitHub
+- JSONPlaceholder API
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/rildo-tola/react-project-showcase.git
+```
+
+Navigate into the project:
+
+```bash
+cd react-project-showcase
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## What I Learned
+
+Through this project, I practised:
+
+- Building reusable React components.
+- Passing props between components.
+- Managing state with useState.
+- Handling side effects with useEffect.
+- Creating custom React hooks.
+- Fetching data from external APIs.
+- Handling loading and error states.
+- Using Git and GitHub for version control.
+
+## Author
+
+Rildo Tola
+
+[GitHub](https://github.com/rildo-tola)
